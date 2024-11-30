@@ -87,6 +87,9 @@ const deleteFeed = async (req, res) => {
   }
 };
 
+// @desc  Like or Unlike Feed
+// @route POST /api/feeds/:id/like
+// @access private
 const likeOrUnlikeFeed = async (req, res) => {
   try {
     const { id } = req.params;
