@@ -5,7 +5,15 @@ import jwt from 'jsonwebtoken';
 // @access public
 const signup = async (req, res) => {
   try {
-    const { name, email, password, userImage = '', address, phone } = req.body;
+    const {
+      name,
+      email,
+      password,
+      userImage = '',
+      address,
+      phone,
+      friendList = [],
+    } = req.body;
 
     const user = await User.findOne({ email });
 
@@ -20,6 +28,7 @@ const signup = async (req, res) => {
       userImage,
       address,
       phone,
+      friendList,
     }).save();
 
     res.status(201).json({ msg: 'User signup successfull' });
@@ -98,4 +107,31 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-export { signup, login, getUser, updateUserProfile };
+// @desc  Add Friend
+// @route POST /api/user/:id
+// @access private
+const addOrRemoveFriend = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { userId } = req.body;
+
+    const user = await User.findById(id);
+
+    const checkFriendExists = await user.friendList.includes(userId);
+
+    if (checkFriendExists) {
+      user.friendList.filter((friend) => friend !== userId);
+      return res
+        .status(200)
+        .json({ msg: 'User removed from your friend list ' });
+    }
+
+    user.friendList.push(userId);
+    res.status(200).json({ msg: 'User added to friend list' });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+export { signup, login, getUser, updateUserProfile, addOrRemoveFriend };

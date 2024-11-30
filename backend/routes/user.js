@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  addOrRemoveFriend,
   getUser,
   login,
   signup,
@@ -13,5 +14,6 @@ router.post('/signup', signup);
 router.post('/login', login);
 router.get('/:id', verifyToken, getUser);
 router.put('/:id', verifyToken, updateUserProfile);
+router.post('/:id', verifyToken, addOrRemoveFriend);
 
 export default router;

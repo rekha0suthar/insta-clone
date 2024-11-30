@@ -25,6 +25,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  friendList: {
+    type: Array,
+  },
   lastLoggedIn: {
     type: Date,
     default: Date.now,
