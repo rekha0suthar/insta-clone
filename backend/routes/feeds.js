@@ -5,6 +5,7 @@ import {
   deleteFeed,
   getFeeds,
   getUserFeed,
+  likeOrUnlikeFeed,
   updateFeed,
 } from '../controllers/feeds.js';
 
@@ -15,5 +16,6 @@ router.get('/', verifyToken, getFeeds);
 router.get('/:id', verifyToken, getUserFeed);
 router.put('/:id', verifyToken, updateFeed);
 router.delete('/:id', verifyToken, deleteFeed);
+router.post('/like/:id', verifyToken, likeOrUnlikeFeed);
 
 export default router;

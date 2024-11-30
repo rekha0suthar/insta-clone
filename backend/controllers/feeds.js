@@ -87,4 +87,30 @@ const deleteFeed = async (req, res) => {
   }
 };
 
-export { createFeed, getFeeds, getUserFeed, updateFeed, deleteFeed };
+const likeOrUnlikeFeed = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    const feed = await Feeds.findById(id);
+    const checkFeedLiked = await feed.likes.includes(userId);
+    if (checkFeedLiked) {
+      feed.likes.filter((likeUser) => likeUser !== userId);
+      return res.status(200).json({ msg: 'Feed unliked' });
+    }
+
+    feed.likes.push(userId);
+    res.status(200).json({ msg: 'Feed liked' });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+export {
+  createFeed,
+  getFeeds,
+  getUserFeed,
+  updateFeed,
+  deleteFeed,
+  likeOrUnlikeFeed,
+};

@@ -12,6 +12,12 @@ const feedSchema = new Schema({
   caption: {
     type: String,
   },
+  likes: {
+    type: Array,
+  },
+  comments: {
+    type: Array,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
