@@ -14,6 +14,17 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  userImage: {
+    type: String,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
   lastLoggedIn: {
     type: Date,
     default: Date.now,

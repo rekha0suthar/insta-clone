@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 // @access public
 const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, userImage = '', address, phone } = req.body;
 
     const user = await User.findOne({ email });
 
@@ -13,7 +13,14 @@ const signup = async (req, res) => {
       return res.status(403).json({ msg: 'User already exists' });
     }
 
-    const newUser = await new User({ name, email, password }).save();
+    const newUser = await new User({
+      name,
+      email,
+      password,
+      userImage,
+      address,
+      phone,
+    }).save();
 
     res.status(201).json({ msg: 'User signup successfull' });
   } catch (err) {
@@ -49,4 +56,46 @@ const login = async (req, res) => {
   }
 };
 
-export { signup, login };
+// @desc  Fetch User Profile
+// @route GET /api/user/:id
+// @access private
+const getUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(403).json({ msg: ' User does not found' });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+// @desc  Update User Profile
+// @route PUT /api/user/:id
+// @access private
+const updateUserProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userImage, address, phone } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      id,
+      { userImage, address, phone },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ msg: `User with id ${id} not found` });
+    }
+
+    res.status(200).json({ msg: `User with id ${id} updated successfully` });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
+export { signup, login, getUser, updateUserProfile };
