@@ -123,8 +123,20 @@ const ContextProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       setFeeds(response.data);
+      setTotalUserPosts(response.data.length);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const userPostCount = async () => {
+    try {
+      const response = await axios.get(`${BASE_API_URI}/feeds/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setTotalUserPosts(response.data.length);
     } catch (err) {
       console.log(err);
@@ -266,6 +278,7 @@ const ContextProvider = ({ children }) => {
         setComments,
         getComments,
         likeOrUnlikeFeed,
+        userPostCount,
       }}
     >
       {children}

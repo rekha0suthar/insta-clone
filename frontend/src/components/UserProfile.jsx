@@ -4,10 +4,11 @@ import { FiLogOut } from 'react-icons/fi';
 import { IoMdHome } from 'react-icons/io';
 
 const UserProfile = () => {
-  const { user, getUser, logout, totalUserPosts, getUserFeeds } =
+  const { user, getUser, logout, totalUserPosts, getUserFeeds, userPostCount } =
     useContext(Context);
   useEffect(() => {
     getUser();
+    userPostCount();
   }, []);
   return (
     <div className="user-profile-container">
@@ -19,11 +20,11 @@ const UserProfile = () => {
         />
         <h3>{user.name}</h3>
         <p>{user.address}</p>
-        <div>{totalUserPosts}</div>
+        <div>{totalUserPosts} Post</div>
       </div>
       <div className="option-menu">
         <div onClick={() => getUserFeeds()}>
-          <IoMdHome /> Feeds
+          <IoMdHome /> My Feeds
         </div>
         <div onClick={logout}>
           <FiLogOut /> Log out

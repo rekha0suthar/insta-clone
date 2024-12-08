@@ -9,7 +9,7 @@ const addComment = async (req, res) => {
     const { userId, comment } = req.body;
 
     const feed = await Feeds.findById(id);
-    feed.comments.push({ userId, comment });
+    feed.comments.push({ userId, feedId: id, comment });
     await feed.save();
     res.status(201).json({ msg: 'Comment added successfully' });
   } catch (err) {

@@ -17,7 +17,7 @@ const CommentInput = ({ handleCommentSubmit, showComments, feed }) => {
         <IoSend />
       </div>
       {showComments[feed._id] && ( // Only show comments if the feed is selected
-        <Comment />
+        <Comment feed={feed} />
       )}
     </div>
   );

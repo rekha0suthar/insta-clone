@@ -98,6 +98,7 @@
   cursor: pointer;
 }
 
+/* Comment CSS */
 .comment-section {
   position: relative;
 }
@@ -180,4 +181,8 @@
 .highlight-comment {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.comment-dummy {
+  text-align: center;
 }

@@ -6,6 +6,9 @@ export const commentSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  feedId: {
+    type: String,
+  },
   comment: {
     type: String,
     required: true,
