@@ -21,6 +21,7 @@ const ContextProvider = ({ children }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [user, setUser] = useState({});
   const [isShow, setIsShow] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const [postImage, setPostImage] = useState();
   const [caption, setCaption] = useState('');
   const [feeds, setFeeds] = useState([]);
@@ -333,6 +334,8 @@ const ContextProvider = ({ children }) => {
         getUser,
         isShow,
         setIsShow,
+        showMenu,
+        setShowMenu,
         postImage,
         setPostImage,
         caption,

@@ -3,8 +3,16 @@ import { Context } from '../Context/Context';
 import '../styles/post.css';
 
 const AddPost = ({ feedId }) => {
-  const { setIsShow, setPostImage, caption, setCaption, createPost, editFeed } =
-    useContext(Context);
+  const {
+    setIsShow,
+    setPostImage,
+    caption,
+    setCaption,
+    createPost,
+    editFeed,
+    loading,
+    setShowMenu,
+  } = useContext(Context);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -26,6 +34,7 @@ const AddPost = ({ feedId }) => {
     } else {
       createPost();
     }
+    setShowMenu(false);
   };
   return (
     <div className="overlay" onClick={() => setIsShow(false)}>
@@ -43,7 +52,9 @@ const AddPost = ({ feedId }) => {
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
         />
-        <button onClick={onClickHandler}>Save Post</button>
+        <button onClick={onClickHandler}>
+          {loading ? 'Saving ...' : 'Save Post'}
+        </button>
       </div>
     </div>
   );

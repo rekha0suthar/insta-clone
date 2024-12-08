@@ -7,9 +7,16 @@ const userId = localStorage.getItem('userId');
 let id;
 
 const FeedHeader = ({ feed }) => {
-  const [showMenu, setShowMenu] = useState(false);
-  const { user, getUser, isShow, setIsShow, deleteFeed, followOrUnfollow } =
-    useContext(Context);
+  const {
+    user,
+    getUser,
+    isShow,
+    setIsShow,
+    deleteFeed,
+    followOrUnfollow,
+    showMenu,
+    setShowMenu,
+  } = useContext(Context);
 
   const editHandler = (feedId) => {
     setIsShow(true);
