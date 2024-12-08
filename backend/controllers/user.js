@@ -21,7 +21,7 @@ const signup = async (req, res) => {
       return res.status(403).json({ msg: 'User already exists' });
     }
 
-    const newUser = await new User({
+    await new User({
       name,
       email,
       password,

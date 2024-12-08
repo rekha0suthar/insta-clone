@@ -7,7 +7,7 @@ const createFeed = async (req, res) => {
   try {
     const { userId, imageUrl, caption } = req.body;
 
-    const newFeed = await new Feeds({
+    await new Feeds({
       userId,
       imageUrl,
       caption,
@@ -24,23 +24,28 @@ const createFeed = async (req, res) => {
 // @access private
 const getFeeds = async (req, res) => {
   try {
-    const feeds = await Feeds.find();
-
-    response.status(200).json(feeds);
+    const feeds = await Feeds.find()
+      .populate('userId', 'name address')
+      .sort({ createdAt: -1 }) // Sort the results before executing
+      .exec();
+    res.status(200).json(feeds);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 };
 
 // @desc  Fetch Feed
-// @route GET /api/feeds/:id
+// @route GET /api/feeds/:userId
 // @access private
-const getUserFeed = async (req, res) => {
+const getUserFeeds = async (req, res) => {
   try {
-    const { id } = req.params;
-    const feed = await Feeds.findById(id);
+    const { userId } = req.params;
+    const feed = await Feeds.find({ userId })
+      .populate('userId', 'name address')
+      .sort({ createdAt: -1 }) // Sort the results before executing
+      .exec();
 
-    response.status(200).json(feed);
+    res.status(200).json(feed);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
@@ -92,17 +97,27 @@ const deleteFeed = async (req, res) => {
 // @access private
 const likeOrUnlikeFeed = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { userId } = req.body;
+    const { id } = req.params; // Get the feed ID from the request parameters
+    const { userId } = req.body; // Get the user ID from the request body
 
+    // Find the feed by ID
     const feed = await Feeds.findById(id);
-    const checkFeedLiked = await feed.likes.includes(userId);
+    if (!feed) {
+      return res.status(404).json({ msg: 'Feed not found' });
+    }
+
+    // Check if the user has already liked the feed
+    const checkFeedLiked = feed.likes.includes(userId);
     if (checkFeedLiked) {
-      feed.likes.filter((likeUser) => likeUser !== userId);
+      // If the user has liked the feed, remove the user from the likes array
+      feed.likes = feed.likes.filter((likeUser) => likeUser !== userId);
+      await feed.save(); // Save the updated feed
       return res.status(200).json({ msg: 'Feed unliked' });
     }
 
+    // If the user has not liked the feed, add the user to the likes array
     feed.likes.push(userId);
+    await feed.save(); // Save the updated feed
     res.status(200).json({ msg: 'Feed liked' });
   } catch (err) {
     res.status(500).json({ msg: err.message });
@@ -112,7 +127,7 @@ const likeOrUnlikeFeed = async (req, res) => {
 export {
   createFeed,
   getFeeds,
-  getUserFeed,
+  getUserFeeds,
   updateFeed,
   deleteFeed,
   likeOrUnlikeFeed,

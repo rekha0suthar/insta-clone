@@ -1,8 +1,10 @@
 import { model, Schema } from 'mongoose';
+import { commentSchema } from './comment.js';
 
 const feedSchema = new Schema({
   userId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   imageUrl: {
@@ -15,9 +17,7 @@ const feedSchema = new Schema({
   likes: {
     type: Array,
   },
-  comments: {
-    type: Array,
-  },
+  comments: [commentSchema],
   createdAt: {
     type: Date,
     default: Date.now,

@@ -10,6 +10,7 @@ const addComment = async (req, res) => {
 
     const feed = await Feeds.findById(id);
     feed.comments.push({ userId, comment });
+    await feed.save();
     res.status(201).json({ msg: 'Comment added successfully' });
   } catch (err) {
     res.status(500).json({ msg: err.message });
@@ -22,9 +23,15 @@ const addComment = async (req, res) => {
 const getComments = async (req, res) => {
   try {
     const { id } = req.params;
-    const feed = await Feeds.findById(id);
+    const feed = await Feeds.findById(id)
+      .populate('comments.userId', 'name address') // Populate userId in comments
+      .exec();
 
-    response.status(200).json(feed.comments);
+    if (!feed) {
+      return res.status(404).json({ msg: 'Feed not found' });
+    }
+
+    res.status(200).json(feed.comments);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
