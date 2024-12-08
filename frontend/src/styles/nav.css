@@ -4,12 +4,16 @@
   position: fixed;
   width: 85%;
   top: 0%;
-  padding: 15px;
+  padding: 10px;
   text-align: left;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   z-index: 100;
+}
+
+.nav-container img {
+  width: 50px;
 }
 
 .nav-container div {
@@ -41,11 +45,15 @@
   background-color: transparent;
   color: black;
   border-radius: 50px;
-  max-width: 15%;
   min-width: fit-content;
   padding: 10px 20px;
   border: 1px solid #ccc;
   cursor: pointer;
   box-shadow: 0px 0px 6px #ccc;
   font-size: 16px;
+  margin-right: 100px;
+}
+
+.nav-container button:hover {
+  background-color: rgb(10, 180, 236);
 }

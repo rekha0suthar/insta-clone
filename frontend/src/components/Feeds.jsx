@@ -12,10 +12,13 @@ const Feeds = () => {
   const { feeds, getFeeds, comment, setComment, addComment, getComments } =
     useContext(Context);
 
+  const [fetchedComments, setFetchedComments] = useState({}); // Track fetched comments for each feed
+
   const showCommentHandler = (feedId) => {
     setShowComments((prev) => ({ ...prev, [feedId]: !prev[feedId] })); // Toggle comment visibility
-    if (!showComments[feedId]) {
-      getComments(feedId); // Fetch comments only if they are being shown
+    if (!showComments[feedId] && !fetchedComments[feedId]) {
+      getComments(feedId); // Fetch comments only if they are being shown and not fetched before
+      setFetchedComments((prev) => ({ ...prev, [feedId]: true })); // Mark comments as fetched
     }
   };
 
@@ -37,7 +40,7 @@ const Feeds = () => {
       <h2>Feeds</h2>
       {feeds.length > 0 &&
         feeds.map((feed) => {
-          const isLiked = feed.likes.includes(userId);
+          const isLiked = feed.likes?.includes(userId);
           return (
             <div className="feed" key={feed._id}>
               <FeedHeader feed={feed} />
@@ -57,9 +60,7 @@ const Feeds = () => {
             </div>
           );
         })}
-      {feeds.length === 0 && (
-        <div style={{ textAlign: 'center' }}>No Feeds</div>
-      )}
+      {feeds.length === 0 && <div className="no-feeds">No Feeds</div>}
     </div>
   );
 };

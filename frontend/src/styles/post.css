@@ -71,6 +71,18 @@
   border-radius: 20px;
 }
 
+.caption {
+  margin-bottom: 10px;
+}
+
+.no-feeds {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 50px;
+}
+
+/* Feed Header CSS */
+
 .user-header {
   display: flex;
   align-items: center;
@@ -85,17 +97,6 @@
 .user-header span h2,
 .user-header span p {
   margin: 0px 10px;
-}
-
-.caption {
-  margin-bottom: 10px;
-}
-
-.feed-footer {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .feed-menu {
@@ -125,6 +126,42 @@
   color: white;
 }
 
+.options {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0px 0px 6px #ccc;
+  top: 30%;
+  right: 4%;
+}
+
+.options p {
+  padding: 10px 20px;
+  margin: 0px;
+  cursor: pointer;
+}
+
+.options p:hover {
+  background-color: #eee;
+}
+
+/* Like Comment CSS */
+
+.feed-footer {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.feed-footer span {
+  cursor: pointer;
+}
+
+.highlight-comment {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* Comment CSS */
 .comment-section {
   position: relative;
@@ -142,24 +179,6 @@
   cursor: pointer;
   border: none;
   background-color: transparent;
-}
-
-.options {
-  position: absolute;
-  background-color: white;
-  box-shadow: 0px 0px 6px #ccc;
-  top: 30%;
-  right: 4%;
-}
-
-.options p {
-  padding: 10px 20px;
-  margin: 0px;
-  cursor: pointer;
-}
-
-.options p:hover {
-  background-color: #eee;
 }
 
 .comments {
@@ -203,13 +222,8 @@
 }
 
 .comment {
-  margin-top: -5px;
+  margin-top: 0px;
   margin-left: 50px;
-}
-
-.highlight-comment {
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 .comment-dummy {

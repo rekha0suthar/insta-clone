@@ -6,12 +6,25 @@
 }
 
 .user-profile-container {
-  width: 15%; /* Fixed width for the user profile */
+  width: 18%; /* Fixed width for the user profile */
   background-color: white;
   text-align: center;
   box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.1);
   height: 100%; /* Full height of the dashboard */
   box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+.user-title-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  border-bottom: 1px solid #eee;
+}
+
+.user-title-logo img {
+  width: 20px;
+  height: 20px;
 }
 
 .user-info {
@@ -21,6 +34,13 @@
 .user-info img {
   width: 100px; /* Fixed width for user image */
   border-radius: 50%; /* Optional: make the image circular */
+}
+.user-info div {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  align-items: center;
 }
 
 .user-info h3,
@@ -37,6 +57,9 @@
 .option-menu {
   margin-top: 20px;
   cursor: pointer;
+}
+.option-menu div {
+  margin-top: 20px;
 }
 
 /* Optional: Add some responsive styles */
