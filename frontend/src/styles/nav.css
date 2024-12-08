@@ -1,0 +1,46 @@
+.nav-container {
+  background-color: white;
+  color: gray;
+  position: fixed;
+  width: 85%;
+  top: 0%;
+  padding: 15px;
+  text-align: left;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-around;
+  z-index: 100;
+}
+
+.nav-container div {
+  display: flex;
+  position: relative;
+  width: 40%;
+}
+
+.nav-container div input {
+  border-radius: 20px;
+  width: 100%;
+  padding: 10px 30px !important;
+}
+
+.search-icon {
+  position: absolute;
+  top: 35%;
+  left: 3%;
+}
+
+.mic-icon {
+  position: absolute;
+  top: 35%;
+  right: 2%;
+}
+
+.nav-container button {
+  width: fit-content;
+  background-color: transparent;
+  color: black;
+  border-radius: 50px;
+  max-width: 15%;
+  min-width: fit-content;
+}

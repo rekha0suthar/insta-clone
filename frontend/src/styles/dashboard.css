@@ -1,0 +1,51 @@
+.dashboard {
+  display: flex;
+  background-color: #7a7979;
+  width: 100vw;
+  height: 100vh; /* Ensure the dashboard takes the full height of the viewport */
+}
+
+.user-profile-container {
+  width: 15%; /* Fixed width for the user profile */
+  background-color: white;
+  text-align: center;
+  box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Full height of the dashboard */
+  box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+.user-info {
+  border-bottom: 1px solid #ccc;
+}
+
+.user-info img {
+  width: 100px; /* Fixed width for user image */
+  border-radius: 50%; /* Optional: make the image circular */
+}
+
+.user-info h3,
+.user-info p {
+  margin: 10px 0; /* Add some margin for spacing */
+}
+
+.feed-container {
+  flex: 1; /* Take the remaining space */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+  background-color: #f9f9f9; /* Optional: light background for the feed */
+}
+
+.option-menu {
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+/* Optional: Add some responsive styles */
+@media (max-width: 768px) {
+  .user-profile-container {
+    width: 30%; /* Increase width on smaller screens */
+  }
+
+  .feed-container {
+    padding: 10px; /* Reduce padding on smaller screens */
+  }
+}
