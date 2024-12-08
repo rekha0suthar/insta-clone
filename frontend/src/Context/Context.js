@@ -1,8 +1,9 @@
 import { createContext, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-const env = 'prod';
+const env = 'dev';
 
 const BASE_API_URI =
   env === 'dev'
@@ -26,6 +27,8 @@ const ContextProvider = ({ children }) => {
   const [totalUserPosts, setTotalUserPosts] = useState(0);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [totalFollowed, setTotalFollowed] = useState(0);
 
   const navigate = useNavigate();
 
@@ -35,6 +38,7 @@ const ContextProvider = ({ children }) => {
   const signup = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       if (password === confirmPassword) {
         const response = await axios.post(`${BASE_API_URI}/user/signup`, {
           name,
@@ -43,13 +47,15 @@ const ContextProvider = ({ children }) => {
           address,
           phone,
         });
-        console.log(response);
+        toast.success(response.data.msg);
         navigate('/');
       } else {
-        console.log('password does not match');
+        toast.error('password does not match');
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,41 +63,60 @@ const ContextProvider = ({ children }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${BASE_API_URI}/user/login`, {
+      setLoading(true);
+      const { data, status } = await axios.post(`${BASE_API_URI}/user/login`, {
         email,
         password,
       });
-      console.log(response);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userId', response.data.user._id);
-      navigate('/dashboard');
+
+      if (status >= 200 && status < 300) {
+        // Check if the response status is in the success range
+        toast.success(data.msg);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.user._id);
+        navigate('/dashboard');
+      } else {
+        toast.error(data.msg || 'Login failed. Please try again.'); // Fallback message
+      }
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      const errorMessage =
+        err.response?.data?.msg || 'An error occurred. Please try again.'; // Extract error message
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    toast.success('Logout successfully');
     navigate('/');
   };
 
   const getUser = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${BASE_API_URI}/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       setUser(response.data);
+      setTotalFollowed(response.data.user.friendList.length);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const createPost = async () => {
     try {
-      await axios.post(
+      setLoading(true);
+
+      const response = await axios.post(
         `${BASE_API_URI}/feeds/`,
         { userId, imageUrl: postImage, caption },
         {
@@ -101,15 +126,21 @@ const ContextProvider = ({ children }) => {
         }
       );
       setIsShow(false);
+      toast.success(response.data.msg);
+
       setCaption('');
       getFeeds();
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getFeeds = async () => {
     try {
+      setLoading(true);
+
       const response = await axios.get(`${BASE_API_URI}/feeds/`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -118,11 +149,15 @@ const ContextProvider = ({ children }) => {
       setFeeds(response.data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getUserFeeds = async () => {
     try {
+      setLoading(true);
+
       const response = await axios.get(`${BASE_API_URI}/feeds/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -132,11 +167,15 @@ const ContextProvider = ({ children }) => {
       setTotalUserPosts(response.data.length);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const userPostCount = async () => {
     try {
+      setLoading(true);
+
       const response = await axios.get(`${BASE_API_URI}/feeds/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -145,6 +184,8 @@ const ContextProvider = ({ children }) => {
       setTotalUserPosts(response.data.length);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,7 +196,7 @@ const ContextProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
+      toast.success(response.data.msg);
       getFeeds();
     } catch (err) {
       console.log(err);
@@ -164,6 +205,7 @@ const ContextProvider = ({ children }) => {
 
   const editFeed = async (feedId) => {
     try {
+      setLoading(true);
       const response = await axios.put(
         `${BASE_API_URI}/feeds/${feedId}`,
         { userId, imageUrl: postImage, caption },
@@ -178,13 +220,15 @@ const ContextProvider = ({ children }) => {
       getFeeds();
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   const addComment = async (feedId) => {
     try {
       if (comment !== '') {
-        await axios.post(
+        const response = await axios.post(
           `${BASE_API_URI}/feeds/${feedId}/comments`,
           { userId, comment },
           {
@@ -196,8 +240,9 @@ const ContextProvider = ({ children }) => {
         setComment('');
         getComments(feedId);
         getFeeds();
+        toast(response.data.msg);
       } else {
-        console.log('Add Comment');
+        toast.warn('Add Comment');
       }
     } catch (err) {
       console.log(err);
@@ -206,6 +251,7 @@ const ContextProvider = ({ children }) => {
 
   const getComments = async (feedId) => {
     try {
+      setLoading(true);
       const response = await axios.get(
         `${BASE_API_URI}/feeds/${feedId}/comments`,
         {
@@ -218,6 +264,8 @@ const ContextProvider = ({ children }) => {
       setComments((prevComments) => [...response.data, ...prevComments]);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -232,6 +280,7 @@ const ContextProvider = ({ children }) => {
           },
         }
       );
+      toast.success(response.data.msg);
       getFeeds();
 
       console.log(response);
@@ -240,6 +289,27 @@ const ContextProvider = ({ children }) => {
     }
   };
 
+  const followOrUnfollow = async (friendId) => {
+    try {
+      if (friendId && userId) {
+        const response = await axios.post(
+          `${BASE_API_URI}/user/${userId}`,
+          { userId: friendId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        toast.success(response.data.msg);
+        getUser();
+
+        console.log(response);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Context.Provider
       value={{
@@ -284,6 +354,11 @@ const ContextProvider = ({ children }) => {
         getComments,
         likeOrUnlikeFeed,
         userPostCount,
+        loading,
+        setLoading,
+        totalFollowed,
+        setTotalFollowed,
+        followOrUnfollow,
       }}
     >
       {children}

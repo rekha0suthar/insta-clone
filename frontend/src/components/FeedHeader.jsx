@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 import { Context } from '../Context/Context';
 import AddPost from './AddPost';
@@ -8,12 +8,16 @@ let id;
 
 const FeedHeader = ({ feed }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const { isShow, setIsShow, deleteFeed } = useContext(Context);
+  const { user, getUser, isShow, setIsShow, deleteFeed, followOrUnfollow } =
+    useContext(Context);
 
   const editHandler = (feedId) => {
     setIsShow(true);
     id = feedId;
   };
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <>
@@ -26,6 +30,14 @@ const FeedHeader = ({ feed }) => {
           <h2>{feed.userId.name}</h2>
           <p>{feed.userId.address}</p>
         </span>
+        {feed.userId._id !== userId && (
+          <button
+            className="follow-btn"
+            onClick={() => followOrUnfollow(feed.userId?._id)}
+          >
+            {user.friendList.includes(feed.userId?._id) ? 'Unfollow' : 'Follow'}
+          </button>
+        )}
         {feed.userId._id === userId && (
           <div className="feed-menu" onClick={() => setShowMenu(!showMenu)}>
             <BsThreeDots />

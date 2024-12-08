@@ -7,15 +7,17 @@ const CommentInput = ({ handleCommentSubmit, showComments, feed }) => {
   const { comment, setComment } = useContext(Context);
   return (
     <div className="comment-section">
-      <input
-        type="text"
-        placeholder="Write your comment"
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-      />
-      <div className="send-icon" onClick={() => handleCommentSubmit(feed._id)}>
-        <IoSend />
-      </div>
+      <form onSubmit={(e) => handleCommentSubmit(e, feed._id)}>
+        <input
+          type="text"
+          placeholder="Write your comment"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+        <button className="send-icon" type="submit">
+          <IoSend />
+        </button>
+      </form>
       {showComments[feed._id] && ( // Only show comments if the feed is selected
         <Comment feed={feed} />
       )}

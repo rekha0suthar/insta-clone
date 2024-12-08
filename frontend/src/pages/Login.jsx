@@ -3,9 +3,10 @@ import '../styles/form.css';
 import { Context } from '../Context/Context';
 
 const Login = () => {
-  const { email, setEmail, password, setPassword, login } = useContext(Context);
+  const { email, setEmail, password, setPassword, login, loading } =
+    useContext(Context);
   return (
-    <form onSubmit={login}>
+    <form onSubmit={login} className="form">
       <h2>Log in</h2>
       <div>
         <label>Email</label>
@@ -28,7 +29,7 @@ const Login = () => {
       <p>
         Don't have an account? <a href="/signup">Signup</a>
       </p>
-      <button type="submit">Login</button>
+      <button type="submit">{loading ? 'Logging in ...' : 'Login'}</button>
     </form>
   );
 };

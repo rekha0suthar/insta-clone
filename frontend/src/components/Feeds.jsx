@@ -19,10 +19,12 @@ const Feeds = () => {
     }
   };
 
-  const handleCommentSubmit = (feedId) => {
+  const handleCommentSubmit = (e, feedId) => {
+    e.preventDefault();
     if (comment.trim()) {
       addComment(feedId); // Pass the comment to addComment
       setComment(''); // Clear the input field
+      showCommentHandler(feedId);
     }
   };
 

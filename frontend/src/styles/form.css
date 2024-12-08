@@ -1,4 +1,4 @@
-form {
+.form {
   max-width: 400px;
   margin: 150px auto;
   text-align: left;
@@ -9,7 +9,7 @@ form {
     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-form h2 {
+.form h2 {
   text-align: center;
   margin-top: 0px;
 }
@@ -34,7 +34,7 @@ input {
   margin-top: 5px;
 }
 
-button {
+.form button {
   border: none;
   color: white;
   background-color: black;
@@ -44,4 +44,8 @@ button {
   font-size: 16px;
   width: 100%;
   cursor: pointer;
+}
+
+button:hover {
+  background-color: rgb(90, 89, 89);
 }

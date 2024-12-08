@@ -98,6 +98,25 @@
   cursor: pointer;
 }
 
+.follow-btn {
+  position: absolute;
+  top: 10%;
+  right: 0%;
+  font-size: 20px;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 5px 20px;
+  background-color: transparent;
+  color: black;
+  cursor: pointer;
+}
+
+.follow-btn:hover {
+  background-color: black;
+  color: white;
+}
+
 /* Comment CSS */
 .comment-section {
   position: relative;
@@ -113,6 +132,8 @@
   top: 15px;
   right: 2%;
   cursor: pointer;
+  border: none;
+  background-color: transparent;
 }
 
 .options {

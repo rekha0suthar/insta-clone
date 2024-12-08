@@ -112,26 +112,31 @@ const updateUserProfile = async (req, res) => {
 // @access private
 const addOrRemoveFriend = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const { userId } = req.body;
+    const { id } = req.params; // The ID of the user whose friend list is being modified
+    const { userId } = req.body; // The ID of the user to be added or removed
 
     const user = await User.findById(id);
-
-    const checkFriendExists = await user.friendList.includes(userId);
-
-    if (checkFriendExists) {
-      user.friendList.filter((friend) => friend !== userId);
-      return res
-        .status(200)
-        .json({ msg: 'User removed from your friend list ' });
+    if (!user) {
+      return res.status(404).json({ msg: 'User  not found' });
     }
 
+    const checkFriendExists = user.friendList.includes(userId);
+
+    if (checkFriendExists) {
+      // Remove the friend
+      user.friendList = user.friendList.filter((friend) => friend !== userId);
+      await user.save(); // Save the changes
+      return res
+        .status(200)
+        .json({ msg: 'User  removed from your friend list' });
+    }
+
+    // Add the friend
     user.friendList.push(userId);
-    res.status(200).json({ msg: 'User added to friend list' });
+    await user.save(); // Save the changes
+    res.status(200).json({ msg: 'User  added to friend list' });
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 };
-
 export { signup, login, getUser, updateUserProfile, addOrRemoveFriend };

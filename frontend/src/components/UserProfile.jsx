@@ -20,7 +20,9 @@ const UserProfile = () => {
         />
         <h3>{user.name}</h3>
         <p>{user.address}</p>
-        <div>{totalUserPosts} Post</div>
+        <div>
+          {totalUserPosts} Post {user.friendList?.length} Friend
+        </div>
       </div>
       <div className="option-menu">
         <div onClick={() => getUserFeeds()}>

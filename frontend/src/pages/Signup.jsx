@@ -17,9 +17,10 @@ const Signup = () => {
     confirmPassword,
     setConfirmPassword,
     signup,
+    loading,
   } = useContext(Context);
   return (
-    <form onSubmit={signup}>
+    <form onSubmit={signup} className="form">
       <h2>Sign up</h2>
       <div>
         <label>Name</label> <br />
@@ -87,7 +88,7 @@ const Signup = () => {
       <p>
         Already have an account? <a href="/">Login</a>
       </p>
-      <button type="submit">Sign Up</button>
+      <button type="submit">{loading ? 'Signing up ...' : 'Sign Up'}</button>
     </form>
   );
 };
