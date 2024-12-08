@@ -55,7 +55,9 @@ const Feeds = () => {
             </div>
           );
         })}
-      {feeds.length === 0 && <div>No Feeds</div>}
+      {feeds.length === 0 && (
+        <div style={{ textAlign: 'center' }}>No Feeds</div>
+      )}
     </div>
   );
 };

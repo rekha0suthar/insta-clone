@@ -2,7 +2,12 @@ import { createContext, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const BASE_API_URI = 'http://localhost:8080/api';
+const env = 'prod';
+
+const BASE_API_URI =
+  env === 'dev'
+    ? 'http://localhost:8080/api'
+    : 'https://insta-clone-backend-opal.vercel.app/api';
 
 const Context = createContext({});
 
